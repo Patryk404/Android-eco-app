@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Input,Button} from 'react-native-elements';
 import { View, Text, StyleSheet } from 'react-native';
 import {IP} from '../env/env';
@@ -11,13 +11,15 @@ const Login= props => {
   const [login,setLogin] = useState('');
   const [password,setPassword] = useState('');
   const [error,setError] = useState();
+
   const handleLoginChange = value =>{
     setLogin(value);
   }
   const handlePasswordChange = value=>{
     setPassword(value);
   }
-  const pressButton = ()=>{
+
+  const pressButtonLogin = ()=>{
     axios.post('http://'+IP+'/auth/login',{ // because localhost not working correctly with react native
     login: login,
     password: password
@@ -25,28 +27,39 @@ const Login= props => {
       'Content-Type': 'application/json'
     }})
     .then(response=>{
-      props.onLogged();
       Navigation.pop(props.parentComponentId);
+      props.onLogged();
       //console.log(response);
     }).catch(err=>{
       setError(err);
     });
   }
+
+  const pressButtonRegister = ()=>{
+    Navigation.push(props.parentComponentId, {
+      component: {
+        name: 'Register'
+      }
+    });
+  };
+
   return (
     <>
       <View style={styles.view}>
         <Text style={styles.text}>
-          Welcome in our App :)
+          Witaj w naszej aplikacji 😀
         </Text>
         <Text style={styles.text2}>
-          Save The world! 🌳 
+          Uratuj świat 🌳 
         </Text>
-        <Input placeholder="Login" value={login} onChangeText={handleLoginChange}/>
-        <Input placeholder="Password" value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
-        <Button title="Login" buttonStyle={styles.button} onPress={pressButton}/>
+        <Input placeholder="Nazwa Użytkownika" value={login} onChangeText={handleLoginChange}/>
+        <Input placeholder="Hasło" value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
+        <Button title="Zaloguj" buttonStyle={styles.button} onPress={pressButtonLogin}/>
         {
-          error ? <Text style={styles.textErr}>Something went wrong :(</Text> : null
+          error ? <Text style={styles.textErr}>Coś poszło nie tak 😵</Text> : null
         }
+        <Text style={styles.textErr}>Nie masz konta?</Text>
+        <Button title="Zarejestruj się" buttonStyle={styles.button} onPress={pressButtonRegister}/>
       </View>
     </>
   );
@@ -84,7 +97,7 @@ Login.options = {
       color: 'green'
     },
     title:{
-      text: 'SignIn',
+      text: 'Zaloguj się',
       color: 'white'
     }
   }

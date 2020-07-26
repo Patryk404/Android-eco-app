@@ -1,22 +1,34 @@
 import React from 'react';
-import { Text,StyleSheet, View } from 'react-native';
+import { Text,StyleSheet, Image,View } from 'react-native';
+import {Navigation} from 'react-native-navigation';
+import {Button} from 'react-native-elements';
 import {connect} from 'react-redux';
+import Informations from '../components/informations_user';
 
 const profile = props=>{
-    // logic with our redux state
+    const buttonHandler=()=>{
+        Navigation.push(props.parentComponentId, {
+             component: {
+               name: 'Login'
+             }
+           });
+     };
+    let informations = null;
+    if(props.logged)
+    {
+        informations = <Informations/>
+    }
+    else {
+        informations = (<>
+            <Image style={styles.image} source={require('../pictures/dummy.jpg')} />
+            <Text style={styles.textImage}>Małpa Pusia</Text>
+            <Text style={styles.textButton}>Przepraszamy ale nie jesteś zalogowany🥺</Text>
+            <Button title='Zaloguj się' buttonStyle={styles.Button} onPress={buttonHandler}/>
+        </>)
+    }
     return(
         <>
-        <Text style={styles.text}>
-            Profile
-        </Text>
-        <View style={styles.view}>
-            <Text style={styles.textView}>
-                o shit
-            </Text>
-            {
-                props.logged ? <Text style={styles.text}>LOGGED</Text> : null
-            }
-        </View>
+            {informations}
         </>
     );
 };
@@ -28,19 +40,34 @@ profile.options = {
 }
 
 const styles = StyleSheet.create({
-    text:{
-        textAlign: 'center',
-        fontSize: 40,
-        marginTop: 30
+    image:{
+        borderRadius: 300,
+        borderWidth: 2,
+        borderColor: 'rgba(0, 0, 0,.25)',
+        width: '60%',
+        height: '40%',
+        marginLeft: 80,
+        marginTop: 30,
     },
     textView:{
-        marginLeft: 20
+        marginLeft: 20,
+
     }, 
-    view:{
-        marginTop: 30,
-        width: '80%',
-        marginLeft: 30,
-        borderWidth: 3
+    textImage: {
+        textAlign: 'center',
+        fontSize: 30,
+        marginTop: 20,
+        marginBottom: 30
+    },
+    textButton:{
+        textAlign: 'center',
+        fontSize: 20,
+        marginBottom: 50
+    },
+    Button:{
+        width: '50%',
+        marginLeft: 100,
+        backgroundColor: 'green'
     }
 });
 

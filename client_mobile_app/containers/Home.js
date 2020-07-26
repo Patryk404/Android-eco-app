@@ -1,80 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import { View,Text,StyleSheet }  from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import {Button} from 'react-native-elements';
+import React, { useEffect } from 'react';
+import {connect} from 'react-redux';
 
-import React,{useState} from 'react';
-import {Input,Button} from 'react-native-elements';
-import { View, Text, StyleSheet } from 'react-native';
-import {IP} from '../env/env';
-import axios from 'axios';
-
-const Login= props => {
-  const [login,setLogin] = useState('');
-  const [password,setPassword] = useState('');
-  const handleLoginChange = value =>{
-    setLogin(value);
-  }
-  const handlePasswordChange = value=>{
-    setPassword(value);
-  }
-  const pressButton = ()=>{
-    axios.post('http://'+IP+'/auth/login',{
-    login: login,
-    password: password
-    },{headers:{
-      'Content-Type': 'application/json'
-    }})
-    .then(response=>{
-      console.log(response.data);
-    });
-  }
-  return (
-    <>
-      <View style={styles.view}>
-        <Text style={styles.text}>
-          Welcome in our App :)
-        </Text>
-        <Text style={styles.text2}>
-          Save The world! 🌳 
-        </Text>
-        <Input placeholder="Login" value={login} onChangeText={handleLoginChange}/>
-        <Input placeholder="Password" value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
-        <Button title="Login" buttonStyle={styles.button} onPress={pressButton}/>
-      </View>
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  text:{
-    fontSize: 30,
-    textAlign: 'center'
-  },
-  text2:{
-    fontSize: 30,
-    textAlign: 'center',
-    marginBottom: 20
-  },  
-  button:{
-    backgroundColor: 'green',
-    width: '50%',
-    marginLeft: 100
-  },
-  view: {
-    marginTop: 100,
-    textAlign: 'center'
-  }
-});
-
-Login.options = {
-  topBar:{
-    visible: false
-  }
+const Home = props =>{
+    const buttonhandler=()=>{
+       Navigation.push(props.parentComponentId, {
+            component: {
+              name: 'Login'
+            }
+          });
+    };
+    return(
+        <>
+        <View style={styles.view}>
+            <Text style={styles.text}>
+                Home
+            </Text>
+            <Button buttonStyle={styles.button} title='Signin' onPress={buttonhandler}/>
+        </View>
+        </>
+    )
 }
 
+const styles = StyleSheet.create({
+    view:{
+        marginTop: 30
+    },
+    button:{
+        width: '50%',
+        marginLeft: 100,
+        marginTop: 50,
+        backgroundColor: 'green'
+    }, 
+    text: {
+        textAlign: 'center',
+        fontSize: 50
+    }
+})
 
-export default Login;
+Home.options = {
+    topBar:{
+        visible: false
+    }
+}
+
+const mapStateToProps = state =>{
+    return {
+        logged: state.logged
+    }
+};
+
+export default connect(mapStateToProps)(Home);

@@ -25,8 +25,15 @@ module.exports.newUser = async (req,res,next)=>{
         password: password
     };
     const new_account = await Account.create(user);
+    
+    const token = await jwt.sign({
+        id: new_account.id,
+        login: new_account.login
+    },process.env.JWT_SECRET);
+
     res.status(201).json({
         account: new_account,
+        token: token,
         message: 'Succesfully created user'
     });
 };

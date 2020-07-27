@@ -29,7 +29,7 @@ const register = props =>{
         })
         .then(response=>{
             //console.log('Registered lol');
-            props.onLogged();
+            props.onLogged(response.data.token);
             Navigation.popToRoot(props.parentComponentId);
         }).catch(err=>{
             setState({
@@ -90,7 +90,7 @@ register.options ={
 
 const mapDispatchToProps = dispatch =>{
     return {
-        onLogged: ()=>dispatch(actions.loggedInto())
+        onLogged: (token)=>dispatch(actions.loggedInto(token))
     };
 };
 

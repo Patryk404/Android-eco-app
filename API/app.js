@@ -1,6 +1,8 @@
 const app = require('express')();
 const bodyParser =require('body-parser');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
+const photosRoute = require('./routes/photos');
 const db = require('./utils/database/database');
 
 app.use(bodyParser.json());
@@ -15,6 +17,9 @@ app.use((req, res, next) => {//cors policy
   next();
 });
 
+app.use('/user',userRoute);
+
+app.use('/photos',photosRoute);
 
 app.use('/auth',authRoute); // finish
 

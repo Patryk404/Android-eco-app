@@ -3,7 +3,7 @@ import { Text,StyleSheet, Image,View } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import {Button} from 'react-native-elements';
 import {connect} from 'react-redux';
-import Informations from '../components/informations_user';
+import Informations from './informations_user';
 
 const profile = props=>{
     const buttonHandler=()=>{

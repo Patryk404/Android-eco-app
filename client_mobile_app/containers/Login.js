@@ -28,7 +28,7 @@ const Login= props => {
     }})
     .then(response=>{
       Navigation.pop(props.parentComponentId);
-      props.onLogged();
+      props.onLogged(response.data.token);
       //console.log(response);
     }).catch(err=>{
       setError(err);
@@ -106,7 +106,7 @@ Login.options = {
 
 const mapDispatchToProps = dispatch =>{ 
   return {
-    onLogged: ()=>dispatch(actions.loggedInto())
+    onLogged: (token)=>dispatch(actions.loggedInto(token))
   };
 };
 

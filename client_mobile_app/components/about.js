@@ -7,7 +7,8 @@ const about = props =>{
         Navigation.mergeOptions('BOTTOM_TABS_LAYOUT', {
             bottomTabs: {
               currentTabIndex: 1,
-              backgroundColor: '#f2f2f2'
+              backgroundColor: '#f2f2f2',
+              hideOnScroll: true
             }
           });
     },[])

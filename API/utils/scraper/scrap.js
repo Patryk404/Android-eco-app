@@ -12,6 +12,5 @@ module.exports.scrap = () =>{
             link: `http://www.pzstudio.pl/public/foto/photo/big/${i}.jpg`
         });
     }
-    console.log('raz');
     return output;
 };

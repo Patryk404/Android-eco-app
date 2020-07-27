@@ -1,4 +1,4 @@
-import { ScrollView,Image,Text,StyleSheet }  from 'react-native';
+import { ScrollView,Image,ActivityIndicator,StyleSheet }  from 'react-native';
 import React, { useEffect,useState } from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
@@ -8,27 +8,31 @@ const Home = props =>{
     const [photos,setPhotos] = useState([]);
     const [loading,setLoading] = useState(false);
     useEffect(()=>{
+        if(photos.length === 0)
+        {
             setLoading(true);
             axios.get('http://'+IP+'/photos')
             .then(response=>{
-                for(var i=0; i<response.data.photos.length; i++){
-                    setPhotos(oldArray=>[...oldArray,response.data.photos[i].link]);
-                };
+                setPhotos(response.data.photos);
                 setLoading(false);
             })
             .catch(err=>{
-                console.log(err);
                 setLoading(false);
+                console.log(err);
             })
-    },[photos]);
+        }
+    },[]);
 
     return(
         <>
         <ScrollView style={styles.view}>
             {
-                photos.map((link,index)=>{
+                loading ? <ActivityIndicator size='large' color='#0000ff' style={styles.activityIndicator}/> : null
+            }
+            {
+                photos.map((photo,index)=>{
                     return (
-                        <Image key={index} source={{uri:link}} style={{width: 350,height: 250, marginTop: 25,marginLeft: 30}}/>
+                        <Image key={index} source={{uri:photo.link}} style={styles.image}/>
                     );
                 })
             }
@@ -38,6 +42,7 @@ const Home = props =>{
 }
 
 const styles = StyleSheet.create({
+    image:{width: 350,height: 250, marginTop: 25,marginLeft: 30},
     view:{
         marginTop: 30,
         textAlign: 'center'

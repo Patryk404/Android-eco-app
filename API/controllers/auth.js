@@ -31,6 +31,8 @@ module.exports.newUser = async (req,res,next)=>{
         login: new_account.login
     },process.env.JWT_SECRET);
 
+    await new_account.createCart();
+
     res.status(201).json({
         account: new_account,
         token: token,

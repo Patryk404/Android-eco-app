@@ -1,6 +1,6 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import {Input,Button} from 'react-native-elements';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text,ActivityIndicator, StyleSheet } from 'react-native';
 import {IP} from '../env/env';
 import axios from 'axios';
 import {connect} from 'react-redux';
@@ -11,6 +11,7 @@ const Login= props => {
   const [login,setLogin] = useState('');
   const [password,setPassword] = useState('');
   const [error,setError] = useState();
+  const [loading,setLoading] = useState(false);
 
   const handleLoginChange = value =>{
     setLogin(value);
@@ -20,6 +21,7 @@ const Login= props => {
   }
 
   const pressButtonLogin = ()=>{
+    setLoading(true);
     axios.post('http://'+IP+'/auth/login',{ // because localhost not working correctly with react native
     login: login,
     password: password
@@ -27,11 +29,13 @@ const Login= props => {
       'Content-Type': 'application/json'
     }})
     .then(response=>{
+      setLoading(false);
       Navigation.pop(props.parentComponentId);
       props.onLogged(response.data.token);
       //console.log(response);
     }).catch(err=>{
       setError(err);
+      setLoading(false);
     });
   }
 
@@ -54,7 +58,10 @@ const Login= props => {
         </Text>
         <Input placeholder="Nazwa Użytkownika" value={login} onChangeText={handleLoginChange}/>
         <Input placeholder="Hasło" value={password} onChangeText={handlePasswordChange} secureTextEntry={true}/>
-        <Button title="Zaloguj" buttonStyle={styles.button} onPress={pressButtonLogin}/>
+        {
+          loading ? <ActivityIndicator size="large" color="green"/> : 
+          <Button title="Zaloguj" buttonStyle={styles.button} onPress={pressButtonLogin}/>
+        }
         {
           error ? <Text style={styles.textErr}>Coś poszło nie tak 😵</Text> : null
         }

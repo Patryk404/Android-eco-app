@@ -3,6 +3,11 @@ const bodyParser =require('body-parser');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const photosRoute = require('./routes/photos');
+const productRoute = require('./routes/product');
+const account = require('./models/account');
+const cart = require('./models/shoppingCart');
+const product = require('./models/product');
+const cartItem = require('./models/cartItem');
 const db = require('./utils/database/database');
 
 app.use(bodyParser.json());
@@ -17,6 +22,8 @@ app.use((req, res, next) => {//cors policy
   next();
 });
 
+app.use('/products',productRoute);
+
 app.use('/user',userRoute);
 
 app.use('/photos',photosRoute);
@@ -30,6 +37,11 @@ app.use((error, req, res, next) => {// catching errors;
     const data = error.data; 
     res.status(status).json({ message: message, data:data });
   });
+
+account.hasOne(cart);
+cart.belongsTo(account);
+cart.belongsToMany(product,{through: cartItem});
+product.belongsToMany(cart,{through: cartItem});
 
 db.sync()
 .then(()=>{

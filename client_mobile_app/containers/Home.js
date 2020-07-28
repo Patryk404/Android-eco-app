@@ -38,7 +38,7 @@ const Home = props =>{
         <>
         <ScrollView style={styles.view} nestedScrollEnabled={true}>
             {
-                loading ? <ActivityIndicator size='large' color='#0000ff' style={styles.activityIndicator}/> : null
+                loading ? <ActivityIndicator size='large' color='green' style={styles.activityIndicator}/> : null
             }
             {
                 photos.map((photo,index)=>{

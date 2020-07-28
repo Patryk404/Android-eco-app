@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {Text,View,StyleSheet} from 'react-native';
+import {Text,View,ActivityIndicator,StyleSheet} from 'react-native';
 import {Input,Button} from 'react-native-elements';
 import {Navigation} from 'react-native-navigation';
 import {IP} from '../env/env';
@@ -13,7 +13,8 @@ const register = props =>{
         password: '',
         email: '', 
         error: null,
-        login: ''
+        login: '',
+        loading: false
     });
     const onChangeInput = (state2) => (value)=>{
         setState({
@@ -22,6 +23,10 @@ const register = props =>{
         });
     };
     const onPressButton = ()=>{
+        setState({
+            ...state,
+            loading: true
+        });
         axios.post('http://'+IP+'/auth/new-account',{
             login: state.login,
             email: state.email,
@@ -29,12 +34,17 @@ const register = props =>{
         })
         .then(response=>{
             //console.log('Registered lol');
+            setState({
+                ...state,
+                loading: false
+            });
             props.onLogged(response.data.token);
             Navigation.popToRoot(props.parentComponentId);
         }).catch(err=>{
             setState({
                 ...state,
-                error: err
+                error: err,
+                loading: false
             });
         })
     };
@@ -45,7 +55,9 @@ const register = props =>{
             <Input placeholder="Email" onChangeText={onChangeInput('email')} value={state.email}/>
             <Input placeholder="Nazwa Użytkownika" onChangeText={onChangeInput('login')} value={state.login}/>
             <Input placeholder="Hasło" secureTextEntry={true} onChangeText={onChangeInput('password')} value={state.password}/>
-            <Button title="Zarejestruj" buttonStyle={styles.Button} onPress={onPressButton}/>
+            {state.loading ? <ActivityIndicator size="large" color="green"/> :
+              <Button title="Zarejestruj" buttonStyle={styles.Button} onPress={onPressButton}/>       
+            }
             {
                 state.error ? <Text style={styles.textErr}>Coś poszło nie tak 😵</Text> : null
             }

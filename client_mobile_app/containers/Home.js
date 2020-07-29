@@ -52,14 +52,14 @@ const Home = props =>{
         <>
         <ScrollView style={styles.view} nestedScrollEnabled={true}>
             {
-                loading ? <ActivityIndicator size='large' color='green' style={styles.activityIndicator}/> : null
+                loading ? <ActivityIndicator size='large' color='green' style={{marginTop: 300}}/> : null
             }
             {
                 photos.map((photo,index)=>{
                     if (photo.title)
                     {
                         try{ // because scraper not working perfect
-                        photo.title = photo.title.split('Słowa kluczowe')[0].trimRight();
+                        photo.title = photo.title.split('Słowa kluczowe:')[0].trimRight();
                         }
                         catch{
                             photo.title = photo.title
@@ -107,7 +107,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 400,
         borderWidth: 0.5,
-        borderColor: 'rgba(158, 150, 150, .9)'
+        borderRadius: 10,
+        borderColor: 'rgba(158, 150, 150, .9)',
+        backgroundColor: '#e6e6e6'
     }, 
     button: {
         marginTop: 20,

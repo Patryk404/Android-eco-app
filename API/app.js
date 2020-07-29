@@ -2,7 +2,6 @@ const app = require('express')();
 const bodyParser =require('body-parser');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
-const photosRoute = require('./routes/photos');
 const productRoute = require('./routes/product');
 const account = require('./models/account');
 const cart = require('./models/shoppingCart');
@@ -25,8 +24,6 @@ app.use((req, res, next) => {//cors policy
 app.use('/products',productRoute);
 
 app.use('/user',userRoute);
-
-app.use('/photos',photosRoute);
 
 app.use('/auth',authRoute); // finish
 

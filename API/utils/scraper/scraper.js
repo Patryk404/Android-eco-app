@@ -13,6 +13,24 @@ module.exports.scrap=async (i)=>{
             const photo_title =  get_photo_title(response);
             const photo_description =  get_photo_description(response);
             photo = {
+                link: `http://www.pzstudio.pl/public/foto/photo/big/${i}.jpg`,
+                title: photo_title,
+                description: photo_description
+            };
+            resolve(photo);
+        }
+    )
+}
+
+module.exports.scrapUrl=async (adress)=>{
+    return new Promise(
+       async (resolve) =>{
+            let photo={};
+            const url = adress;
+            const response = await axios.get(url);
+            const photo_title =  get_photo_title(response);
+            const photo_description =  get_photo_description(response);
+            photo = {
                 link: url,
                 title: photo_title,
                 description: photo_description

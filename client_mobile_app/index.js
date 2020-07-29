@@ -7,6 +7,7 @@ import Profile from './containers/Profile';
 import About from './components/about';
 import Register from './containers/Register';
 import SpecificImage from './components/specific_image';
+import InformationsImage from './containers/Informations_photo';
 import {createStore} from 'redux';
 import authReducer from './store/reducers/authReducer';
 
@@ -15,6 +16,7 @@ import React from 'react';
 const store = createStore(authReducer);
 
 Navigation.registerComponent('SpecificImage',()=>SpecificImage);
+Navigation.registerComponent('InformationsImage',()=>InformationsImage);
 Navigation.registerComponent('About', ()=>About);
 Navigation.registerComponent('Home', () => (props)=> // we must pass because we can't do this Navigation.push function
 <Provider store={store}>
